@@ -38,8 +38,8 @@ pipeline {
         stage('Deploy Registery Image') {
               steps {
                   sh '''
-                  docker tag simple-apps-pipeline hattpri/simple-apps-pipeline
-                  docker push hattpri/simple-apps-pipeline
+                  docker tag simple-apps-pipeline-apps hattpri/simple-apps-pipeline-apps
+                  docker push hattpri/simple-apps-pipeline-apps
                   docker image prune -a -f
                   '''
               }
