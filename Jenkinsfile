@@ -1,25 +1,30 @@
 pipeline {
-    agent { label "dev01-esa" }
-    tools { nodejs "NodeJS-18.16.0" }
+    agent { label 'dev1-aftafiandi' }
+    
+    tools {nodejs "NodeJS-18.16.0"}
 
     stages {
         stage('Build') {
             steps {
-                sh ''' npm install'''
+                sh '''
+                npm install'''
             }
         }
-        stage('Unit Testing') {
+        stage('Testing') {
             steps {
-                sh '''npm test'''
+                sh '''
+                npm test
+                npm run test:coverage'''
             }
         }
         stage('Code Review') {
             steps {
-                sh '''sonar-scanner \
-                -Dsonar.projectKey=simple-apps \
+                sh '''
+                sonar-scanner \
+                -Dsonar.projectKey=simple-apps-2 \
                 -Dsonar.sources=. \
-                -Dsonar.host.url=http://172.23.5.4:9000 \
-                -Dsonar.login=sqp_d54d727c34b1893ad1bcd1167e76b43e6dbb8b8a'''
+                -Dsonar.host.url=http://172.23.11.113:9000 \
+                -Dsonar.login=sqp_0c3bd05303d87bb64cf752718fe494cbf13d0945'''
             }
         }
         stage('Deploy compose') {
@@ -30,14 +35,14 @@ pipeline {
                 '''
             }
         }
-        stage('Push Image and Clean Image') {
-            steps {
-                sh '''
-                docker tag simple-apps-apps esanugraha/simple-apps-apps
-                docker push esanugraha/simple-apps-apps
-                docker image prune -a -f
-                '''
-            }
-        }
+        stage('Deploy Registery Image') {
+              steps {
+                  sh '''
+                  docker tag simple-apps-pipeline hattpri/simple-apps-pipeline
+                  docker push hattpri/simple-apps-pipeline
+                  docker image prune -a -f
+                  '''
+              }
+          }
     }
 }
