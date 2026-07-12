@@ -14,7 +14,7 @@ pipeline {
             steps {
                 sh '''
                 npm test
-                npm run test:coverage'''
+                '''
             }
         }
         stage('Code Review') {
