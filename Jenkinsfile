@@ -6,7 +6,8 @@ pipeline {
     environment {
         NAMEAPP = 'simple-apps-pipeline-apps'
         SONARHOST = 'http://172.23.11.113:9000'
-        TOKENSONAR = 'sqp_0c3bd05303d87bb64cf752718fe494cbf13d0945'        
+        TOKENSONAR = 'sqp_0c3bd05303d87bb64cf752718fe494cbf13d0945'  
+        VERSION = 'V1.0.0'
     }
 
     stages {
@@ -44,8 +45,8 @@ pipeline {
         stage('Deploy Registery Image') {
               steps {
                   sh '''
-                  docker tag ${NAMEAPP} hattpri/${NAMEAPP}
-                  docker push hattpri/${NAMEAPP}
+                  docker tag ${NAMEAPP} hattpri/${NAMEAPP}:${VERSION}
+                  docker push hattpri/${NAMEAPP}:${VERSION}
                   docker image prune -a -f
                   '''
               }
